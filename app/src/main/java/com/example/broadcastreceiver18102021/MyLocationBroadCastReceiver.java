@@ -1,6 +1,7 @@
 package com.example.broadcastreceiver18102021;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ public class MyLocationBroadCastReceiver extends BroadcastReceiver implements Lo
 
     Context context;
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("BBB", Thread.currentThread().getName());
