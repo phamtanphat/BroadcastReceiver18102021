@@ -28,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
         }else{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 IntentFilter intentFilter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
+                intentFilter.addCategory("android.intent.category.DEFAULT");
                 registerReceiver(myLocationBroadCastReceiver,intentFilter);
+            }else {
+                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
         }
 
@@ -38,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 123){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                     IntentFilter intentFilter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
+                    intentFilter.addCategory("android.intent.category.DEFAULT");
                     registerReceiver(myLocationBroadCastReceiver,intentFilter);
+                }else{
+                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 }
             }
         }
@@ -51,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(myLocationBroadCastReceiver);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            unregisterReceiver(myLocationBroadCastReceiver);
+        }
     }
 }
